@@ -13,13 +13,13 @@ package com.hankcs.test.seg;
 
 import com.hankcs.hanlp.algorithm.Viterbi;
 import junit.framework.TestCase;
-import static com.hankcs.test.seg.TestViterbi.Weather.*;
-import static com.hankcs.test.seg.TestViterbi.Activity.*;
+import static com.hankcs.test.seg.ViterbiAlgTest.Weather.*;
+import static com.hankcs.test.seg.ViterbiAlgTest.Activity.*;
 
 /**
  * @author hankcs
  */
-public class TestViterbi extends TestCase
+public class ViterbiAlgTest extends TestCase
 {
     static enum Weather
     {

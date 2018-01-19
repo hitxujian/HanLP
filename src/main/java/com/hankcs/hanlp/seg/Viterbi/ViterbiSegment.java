@@ -36,12 +36,11 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
     @Override
     protected List<Term> segSentence(char[] sentence)
     {
-//        long start = System.currentTimeMillis();
+
         WordNet wordNetAll = new WordNet(sentence);
-        ////////////////生成词网////////////////////
-        GenerateWordNet(wordNetAll);
-        ///////////////生成词图////////////////////
-//        System.out.println("构图：" + (System.currentTimeMillis() - start));
+        GenerateWordNet(wordNetAll);//生成词图的过程
+        //System.out.printf("粗分词网：\n%s\n", wordNetAll);
+
         if (HanLP.Config.DEBUG)
         {
             System.out.printf("粗分词网：\n%s\n", wordNetAll);

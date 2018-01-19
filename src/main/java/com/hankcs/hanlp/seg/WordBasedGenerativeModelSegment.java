@@ -421,9 +421,7 @@ public abstract class WordBasedGenerativeModelSegment extends Segment
     }
 
     /**
-     * 生成一元词网
-     *
-     * @param wordNetStorage
+    生成词图的过程，其实就是给定一句话，生成这一句话所有可能的路径过程
      */
     protected void GenerateWordNet(final WordNet wordNetStorage)
     {
