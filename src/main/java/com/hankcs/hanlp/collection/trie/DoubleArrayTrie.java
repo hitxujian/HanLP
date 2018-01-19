@@ -1138,7 +1138,7 @@ public class DoubleArrayTrie<V> implements Serializable, ITrie<V>
          */
         public int length;
         /**
-         * key的字典序坐标
+         * key的字典序坐标,等效词ID,也是Attribute的下标
          */
         public int index;
         /**

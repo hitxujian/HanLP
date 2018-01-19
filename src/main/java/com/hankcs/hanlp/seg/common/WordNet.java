@@ -26,7 +26,23 @@ import java.util.ListIterator;
 import static com.hankcs.hanlp.utility.Predefine.logger;
 
 /**
- * @author hankcs
+代表了一个词图，走到当前位置，然后当前位置 所有的可能的词串成一串 ，组成一个list
+
+0始##始
+1他
+2说
+3的/的确
+4确/确实
+5实/实在
+6在/在理
+7理
+8末##末
+
+这个储存起来很简单，一个一维数组，每个元素是一个单链表。
+
+怎么知道“的确”的下一个词是什么呢？“的确”的行号是4,长度是2,4+2=6，于是第六行的两个词“实/实在”就是“的确”的后续。就这么简单。
+
+同时这种方法速度非常快，插入和查询的时间都是O(1)。
  */
 public class WordNet
 {
@@ -65,6 +81,7 @@ public class WordNet
     public WordNet(char[] charArray)
     {
         this.charArray = charArray;
+        //要加上开头和结尾
         vertexes = new LinkedList[charArray.length + 2];
         for (int i = 0; i < vertexes.length; ++i)
         {
@@ -103,7 +120,8 @@ public class WordNet
         for (Vertex oldVertex : vertexes[line])
         {
             // 保证唯一性
-            if (oldVertex.realWord.length() == vertex.realWord.length()) return;
+            if (oldVertex.realWord.length() == vertex.realWord.length()) 
+            	return;
         }
         vertexes[line].add(vertex);
         ++size;

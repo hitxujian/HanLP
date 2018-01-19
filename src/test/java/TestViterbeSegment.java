@@ -28,7 +28,7 @@ public class TestViterbeSegment
     {
         String[] testCase = new String[]{
                 "水的沸点是一百度",
-                "这些问题请下课以后一一百度解决"
+                
                 };
        // for (String sentence : testCase)
         //{

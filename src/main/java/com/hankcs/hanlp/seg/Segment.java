@@ -149,11 +149,7 @@ public abstract class Segment
 
     /**
      * 快速原子分词，希望用这个方法替换掉原来缓慢的方法
-     *
-     * @param charArray
-     * @param start
-     * @param end
-     * @return
+     比如“水的沸点是一百度”，这里  是 是单词，一这个不是单词，输入“是一”，要拆分
      */
     protected static List<AtomNode> quickAtomSegment(char[] charArray, int start, int end)
     {

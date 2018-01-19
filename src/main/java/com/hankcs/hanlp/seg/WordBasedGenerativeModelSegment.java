@@ -421,21 +421,28 @@ public abstract class WordBasedGenerativeModelSegment extends Segment
     }
 
     /**
-    生成词图的过程，其实就是给定一句话，生成这一句话所有可能的路径过程
+ 给定一句话，在这句话的每个位置  枚举处 所有的词
      */
     protected void GenerateWordNet(final WordNet wordNetStorage)
     {
+    	//原始输入，就是原始句子
         final char[] charArray = wordNetStorage.charArray;
 
-        // 核心词典查询
+        // 核心词典查询，注意这个核心词典保证了  如果 一个位置出现两个词，短词在前，长词在后
+        //比如"水的沸点是一百度"，这里   沸/沸点
         DoubleArrayTrie<CoreDictionary.Attribute>.Searcher searcher = CoreDictionary.trie.getSearcher(charArray, 0);
         while (searcher.next())
         {
-            wordNetStorage.add(searcher.begin + 1, new Vertex(new String(charArray, searcher.begin, searcher.length), searcher.value, searcher.index));
+        	
+        	String temp_word=new String(charArray, searcher.begin, searcher.length);
+        	//attribute 就是属性名属性值，比如这个单词 作为名词出现多少次  水	n	4513
+        	CoreDictionary.Attribute temp_attr=searcher.value;
+        	int index_inCiTu=searcher.begin+1;//index就是在词图这个数组中的下标，因为第0个是开始符号所以+1
+        	//seracher.index  等效词ID,也是Attribute的下标,就是属性的编号
+            wordNetStorage.add(  index_inCiTu , new Vertex(temp_word, temp_attr, searcher.index));
         }
         // 强制用户词典查询
-        if (config.forceCustomDictionary)
-        {
+        if (config.forceCustomDictionary){
             CustomDictionary.parseText(charArray, new AhoCorasickDoubleArrayTrie.IHit<CoreDictionary.Attribute>()
             {
                 @Override
@@ -445,21 +452,37 @@ public abstract class WordBasedGenerativeModelSegment extends Segment
                 }
             });
         }
-        // 原子分词，保证图连通
+        // 原子分词，保证图连通，就是处理如果某个位置没有词语存在，比如位置6，需要处理一下，还有这个可以看到每个位置  短词语在前，长词在后
+        /**
+原始
+ [[ ], [水], [的], [沸, 沸点], [点], [是], [], [百度], [度], [ ]]
+处理后
+0:[ ]
+1:[水]
+2:[的]
+3:[沸, 沸点]
+4:[点]
+5:[是]
+6:[一]
+7:[百度]
+8:[度]
+9:[ ]
+
+         */
         LinkedList<Vertex>[] vertexes = wordNetStorage.getVertexes();
-        for (int i = 1; i < vertexes.length; )
-        {
-            if (vertexes[i].isEmpty())
-            {
+        for (int i = 1; i < vertexes.length; ){
+            if (vertexes[i].isEmpty()){//empty 说明当前位置没有在词典中找到单词，那就从下一个位置开始往后遍历找，找到第一个不为空的单词
                 int j = i + 1;
-                for (; j < vertexes.length - 1; ++j)
-                {
-                    if (!vertexes[j].isEmpty()) break;
+                for (; j < vertexes.length - 1; ++j){
+                    if (!vertexes[j].isEmpty())
+                    	break;
                 }
+                //这里就是处理  “是一”，注意处理的是  charArray
                 wordNetStorage.add(i, quickAtomSegment(charArray, i - 1, j - 1));
                 i = j;
+            } else {
+            	i += vertexes[i].getLast().realWord.length();
             }
-            else i += vertexes[i].getLast().realWord.length();
         }
     }
 
