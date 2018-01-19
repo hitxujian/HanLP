@@ -154,43 +154,5 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
         return vertexList;
     }
 
-    /**
-     * 第二次维特比，可以利用前一次的结果，降低复杂度
-     *
-     * @param wordNet
-     * @return
-     */
-//    private static List<Vertex> viterbiOptimal(WordNet wordNet)
-//    {
-//        LinkedList<Vertex> nodes[] = wordNet.getVertexes();
-//        LinkedList<Vertex> vertexList = new LinkedList<Vertex>();
-//        for (Vertex node : nodes[1])
-//        {
-//            if (node.isNew)
-//                node.updateFrom(nodes[0].getFirst());
-//        }
-//        for (int i = 1; i < nodes.length - 1; ++i)
-//        {
-//            LinkedList<Vertex> nodeArray = nodes[i];
-//            if (nodeArray == null) continue;
-//            for (Vertex node : nodeArray)
-//            {
-//                if (node.from == null) continue;
-//                if (node.isNew)
-//                {
-//                    for (Vertex to : nodes[i + node.realWord.length()])
-//                    {
-//                        to.updateFrom(node);
-//                    }
-//                }
-//            }
-//        }
-//        Vertex from = nodes[nodes.length - 1].getFirst();
-//        while (from != null)
-//        {
-//            vertexList.addFirst(from);
-//            from = from.from;
-//        }
-//        return vertexList;
-//    }
+  
 }
