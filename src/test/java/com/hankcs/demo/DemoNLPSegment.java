@@ -26,7 +26,7 @@ public class DemoNLPSegment
     public static void main(String[] args)
     {
         HanLP.Config.enableDebug();
-        List<Term> termList = NLPTokenizer.segment("上外日本文化经济学院的陆晚霞教授正在教授泛读课程");
+        List<Term> termList = NLPTokenizer.segment("水的沸点是一百度。");
         System.out.println(termList);
     }
 }
