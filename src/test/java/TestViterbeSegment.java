@@ -30,10 +30,10 @@ public class TestViterbeSegment
                 "水的沸点是一百度",
                 "这些问题请下课以后一一百度解决"
                 };
-        for (String sentence : testCase)
-        {
-            List<Term> termList = HanLP.segment(sentence);
+       // for (String sentence : testCase)
+        //{
+            List<Term> termList = HanLP.segment("水的沸点是一百度");
             System.out.println(termList);
-        }
+       // }
     }
 }

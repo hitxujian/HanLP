@@ -21,9 +21,9 @@ import java.util.Map;
 import static com.hankcs.hanlp.utility.Predefine.logger;
 
 /**
- * 顶点
- *
- * @author hankcs
+Vertext代表了词图每个单元格，具体词图可以参考 http://blog.csdn.net/zhaojianting/article/details/78194317
+每个单元格一定是代表了一个单词，
+当然该单词的前驱可以有多个，其中累计费用最小的那个前驱叫做最佳前驱词--就是字段from
  */
 public class Vertex
 {
@@ -60,6 +60,11 @@ public class Vertex
      */
     public double weight;
 
+    /**
+     
+     * @param from--给定当前节点的candidate前驱
+     * 其实就是判断给定节点from是不是当前节点的最佳前驱？？？
+     */
     public void updateFrom(Vertex from)
     {
         double weight = from.weight + MathTools.calculateWeight(from, this);

@@ -127,18 +127,30 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
     {
         // 避免生成对象，优化速度
         LinkedList<Vertex> nodes[] = wordNet.getVertexes();
+        //这里的nodes是是一个数组，数组每个元素类型是   LinkedList<Vertex>,也就是说数组每个元素是一个List
+        //这个nodes数组其实存储了词图每个行，因为每行可以有多个元素所以是一个list，这里也就可以看出每个Vertex代表了词图每个单元格
+        //nodes[]每个元素代表了一个行，一个行可以有多个Vertext
+        
         LinkedList<Vertex> vertexList = new LinkedList<Vertex>();
+        
+        //注意这里是单独处理第一个行，应为nodes[0]是起始节点不需要考虑
         for (Vertex node : nodes[1])
         {
+        	//因为下表为0表示起始，所以这里单独设定
             node.updateFrom(nodes[0].getFirst());
         }
+        //从第一个节点开始往后处理，因为第0个节点是开始，最后一个节点是结束
         for (int i = 1; i < nodes.length - 1; ++i)
         {
-            LinkedList<Vertex> nodeArray = nodes[i];
-            if (nodeArray == null) continue;
+        	
+            LinkedList<Vertex> nodeArray = nodes[i];//注意nodes【】每个元素是词图一个行，一个行可以有多个列所以是是一个list
+            if (nodeArray == null) 
+            	continue;
+            //这里其实是遍历词图指定行的每个列
             for (Vertex node : nodeArray)
             {
-                if (node.from == null) continue;
+                if (node.from == null) 
+                	continue;
                 for (Vertex to : nodes[i + node.realWord.length()])
                 {
                     to.updateFrom(node);
