@@ -186,9 +186,18 @@ public abstract class Segment
     }
 
     /**
-     * 使用用户词典合并粗分结果
-     * @param vertexList 粗分结果
-     * @return 合并后的结果
+    //合并用户添加词典的过程，其实用户自定义词典 词频 对于分词是没啥意义的，
+    //https://github.com/hankcs/HanLP/issues/30   讲了自定义词典的作用只是构成粗分词图
+     * 
+     * 
+     * 
+     //2词频只是对于词性标注有意义
+    //frequence其实没啥意义的    https://github.com/hankcs/HanLP/issues/123
+     * 
+     * 
+     //3自定义词典是对模型的补丁，优先级不能超过模型，所以不保证一定能分出来。
+    //data/dictionary/CoreNatureDictionary.txt中已经有网剧，所以应该通过调NGram模型解决。请参考：f8e789d
+    // 
      */
     protected static List<Vertex> combineByCustomDictionary(List<Vertex> vertexList)
     {
@@ -270,6 +279,11 @@ public abstract class Segment
      * @param wordNetAll 收集用户词语到全词图中
      * @return 合并后的结果
      */
+    //合并用户添加词典的过程，其实用户自定义词典 词频 对于分词是没啥意义的，词频只是对于词性标注有意义
+    //https://github.com/hankcs/HanLP/issues/30   讲了自定义词典的作用只是构成粗分词图
+    //frequence其实没啥意义的    https://github.com/hankcs/HanLP/issues/123
+    //data/dictionary/CoreNatureDictionary.txt中已经有网剧，所以应该通过调NGram模型解决。请参考：f8e789d
+    // 自定义词典是对模型的补丁，优先级不能超过模型，所以不保证一定能分出来。
     protected static List<Vertex> combineByCustomDictionary(List<Vertex> vertexList, final WordNet wordNetAll)
     {
         List<Vertex> outputList = combineByCustomDictionary(vertexList);

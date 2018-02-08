@@ -12,7 +12,9 @@
 
 
 import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.dictionary.CustomDictionary;
 import com.hankcs.hanlp.seg.Segment;
+import com.hankcs.hanlp.seg.Viterbi.ViterbiSegment;
 import com.hankcs.hanlp.seg.common.Term;
 
 import java.util.List;
@@ -26,14 +28,12 @@ public class TestViterbeSegment
 {
     public static void main(String[] args)
     {
-        String[] testCase = new String[]{
-                "水的沸点是一百度",
-                
-                };
-       // for (String sentence : testCase)
-        //{
-            List<Term> termList = HanLP.segment("水的沸点是一百度");
-            System.out.println(termList);
-       // }
+       
+    	     Segment segment = new ViterbiSegment();
+    	    CustomDictionary.insert("绝对高大上");
+//    	    CustomDictionary.insert("三严三实");
+    	    System.out.println(segment.seg(
+    	            "外观绝对高大上，不信的是没见过."
+    	    ));
     }
 }

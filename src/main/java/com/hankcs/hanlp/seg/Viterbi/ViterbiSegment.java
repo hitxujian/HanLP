@@ -33,11 +33,15 @@ import java.util.List;
  */
 public class ViterbiSegment extends WordBasedGenerativeModelSegment
 {
+	/**
+	 * 分词过程中两次用到了  自定义词典，第一次是在    GenerateWordNet 影响词图
+	 * 第二次是在combineByCustomDictionary，对最后的分词结果根据自定义词典合并
+	 */
     @Override
-    protected List<Term> segSentence(char[] sentence)
-    {
+    protected List<Term> segSentence(char[] sentence){
 
         WordNet wordNetAll = new WordNet(sentence);
+        //1、用到了自定义词典
         GenerateWordNet(wordNetAll);//生成词图的过程
         //System.out.printf("粗分词网：\n%s\n", wordNetAll);
 
@@ -53,6 +57,7 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
         {
             if (config.indexMode > 0)
                 combineByCustomDictionary(vertexList, wordNetAll);
+            //2、最后结果根据自定义词典合并
             else combineByCustomDictionary(vertexList);
         }
 

@@ -423,8 +423,7 @@ public abstract class WordBasedGenerativeModelSegment extends Segment
     /**
  给定一句话，在这句话的每个位置  枚举处 所有的词
      */
-    protected void GenerateWordNet(final WordNet wordNetStorage)
-    {
+    protected void GenerateWordNet(final WordNet wordNetStorage){
     	//原始输入，就是原始句子
         final char[] charArray = wordNetStorage.charArray;
 
