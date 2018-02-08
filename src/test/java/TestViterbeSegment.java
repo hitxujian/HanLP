@@ -30,10 +30,9 @@ public class TestViterbeSegment
     {
        
     	     Segment segment = new ViterbiSegment();
-    	    CustomDictionary.insert("绝对高大上");
-//    	    CustomDictionary.insert("三严三实");
+    	    CustomDictionary.insert("口交");
     	    System.out.println(segment.seg(
-    	            "外观绝对高大上，不信的是没见过."
+    	            "港口交通立交桥"
     	    ));
     }
 }

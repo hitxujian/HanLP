@@ -12,6 +12,7 @@
 package com.hankcs.hanlp.seg.Viterbi;
 
 import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.dictionary.CustomDictionary;
 import com.hankcs.hanlp.recognition.nr.JapanesePersonRecognition;
 import com.hankcs.hanlp.recognition.nr.PersonRecognition;
 import com.hankcs.hanlp.recognition.nr.TranslatedPersonRecognition;
@@ -36,6 +37,13 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
 	/**
 	 * 分词过程中两次用到了  自定义词典，第一次是在    GenerateWordNet 影响词图
 	 * 第二次是在combineByCustomDictionary，对最后的分词结果根据自定义词典合并
+	 * 但是注意第二次的时候，长词的原则，也就是说你做了切分，但是自定义词典的词比较长可以覆盖切分的几个词那么就覆盖
+	 * 如果自定义词典词语比较短，是不会替换的
+	 *  CustomDictionary.insert("口交");
+    	    System.out.println(segment.seg(
+    	            "港口交通立交桥"
+    	    ));
+     是没有问题的
 	 */
     @Override
     protected List<Term> segSentence(char[] sentence){
