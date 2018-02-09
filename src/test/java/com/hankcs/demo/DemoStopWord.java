@@ -20,7 +20,7 @@ import com.hankcs.hanlp.tokenizer.NotionalTokenizer;
 import java.util.List;
 
 /**
- * 演示如何去除停用词
+ 停用词就是利用 CoreStopWordDictionary
  *
  * @author hankcs
  */

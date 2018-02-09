@@ -13,9 +13,11 @@
 
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.dictionary.CustomDictionary;
+import com.hankcs.hanlp.dictionary.stopword.CoreStopWordDictionary;
 import com.hankcs.hanlp.seg.Segment;
 import com.hankcs.hanlp.seg.Viterbi.ViterbiSegment;
 import com.hankcs.hanlp.seg.common.Term;
+import com.hankcs.hanlp.tokenizer.BasicTokenizer;
 
 import java.util.List;
 
@@ -29,10 +31,13 @@ public class TestViterbeSegment
     public static void main(String[] args)
     {
        
-    	     Segment segment = new ViterbiSegment();
+    	     Segment segment = new ViterbiSegment().enableCustomDictionary(false);
     	    CustomDictionary.insert("口交");
-    	    System.out.println(segment.seg(
-    	            "港口交通立交桥"
-    	    ));
+    	   String text="要叫床你好，小贝你好。";
+    	    
+    	     List<Term> termList = segment.seg(text);
+    	        System.out.println(termList);
+    	    
+    	    
     }
 }

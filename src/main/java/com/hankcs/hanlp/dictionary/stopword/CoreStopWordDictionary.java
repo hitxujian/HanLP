@@ -62,6 +62,7 @@ public class CoreStopWordDictionary
     }
 
     /**
+     * 去除停用词的过程考虑了词性，自己可以改动成不用词性过滤的情况
      * 核心停用词典的核心过滤器，词性属于名词、动词、副词、形容词，并且不在停用词表中才不会被过滤
      */
     public static Filter FILTER = new Filter()
