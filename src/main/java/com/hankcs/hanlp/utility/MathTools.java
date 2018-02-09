@@ -22,6 +22,9 @@ import static com.hankcs.hanlp.utility.Predefine.*;
 public class MathTools
 {
     /**
+     * 注意费用的定义：因为每个概率都很小，如果句子较长，最后得到的概率接近0，解决方法是求概率的对数之和，将乘法变成加法。
+     * 词典概率对数都是负数，取反就变正了，把这个正数叫做费用
+     * 概率乘法越大变成 -log(p) 加法越小越好
      * 从一个词到另一个词的词的花费
      *
      * @param from 前面的词
@@ -37,8 +40,10 @@ public class MathTools
         }
         int nTwoWordsFreq = CoreBiGramTableDictionary.getBiFrequency(from.wordID, to.wordID);
        //原作者
-        //double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCY) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
-        double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCY) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq/dTemp));
+        double value = -Math.log(   dSmoothingPara * frequency / (MAX_FREQUENCY) + 
+        		                    (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp)
+        		                );
+ 
 
         if (value < 0.0)
         {

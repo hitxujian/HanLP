@@ -1,4 +1,5 @@
 1、参考自http://blog.csdn.net/zhaojianting/article/details/78194317
+http://sparkgis.com/java/2017/10/hanlp%E7%AC%94%E8%AE%B002-%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95-%E5%8E%9F-hanlp%E7%AC%94%E8%AE%B002-%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95-swimmer/
 double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCY) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp))
 double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCY) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq/dTemp));
     
