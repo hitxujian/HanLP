@@ -1,15 +1,4 @@
-/*
- * <summary></summary>
- * <author>He Han</author>
- * <email>hankcs.cn@gmail.com</email>
- * <create-date>2014/12/7 19:02</create-date>
- *
- * <copyright file="DemoSegment.java" company="上海林原信息科技有限公司">
- * Copyright (c) 2003-2014, 上海林原信息科技有限公司. All Right Reserved, http://www.linrunsoft.com/
- * This source is subject to the LinrunSpace License. Please contact 上海林原信息科技有限公司 to get more information.
- * </copyright>
- */
-
+package aaa.xujian.test;
 
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.dictionary.CustomDictionary;
@@ -33,13 +22,15 @@ public class TestViterbeSegment
     {
        
 //		Segment segment = new ViterbiSegment().enableCustomDictionary(false);
-//		CustomDictionary.insert("口交");
+		//CustomDictionary.insert("叫床");
 //		String text = "要叫床你好，小贝你好。";
 //
 //		List<Term> termList = segment.seg(text);
 //		System.out.println(termList);
+    	//HanLP.segment()
     	Segment segment=new ViterbiSegment().enableCustomDictionary(true).enablePlaceRecognize(false).enableOrganizationRecognize(false);
-		String  text="唱一首歌叫床";
+		String  text="陶某、陶某某路经该处时";
+		//我/rr, 要/v, 听/v, 葫芦娃/nz, 的/ude1, 歌/n, 是/vshi, 葫芦娃/nz, 葫芦娃/nz, ，/w, 是/vshi, 赤裸/n, 化/v, 。/w]
 		List<Term> segTermList=segment.seg(text) ;
 		System.out.println(segTermList);
     	    

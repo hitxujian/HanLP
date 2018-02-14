@@ -1,14 +1,4 @@
-/*
- * <summary></summary>
- * <author>He Han</author>
- * <email>hankcs.cn@gmail.com</email>
- * <create-date>2014/10/29 14:53</create-date>
- *
- * <copyright file="AbstractBaseSegment.java" company="上海林原信息科技有限公司">
- * Copyright (c) 2003-2014, 上海林原信息科技有限公司. All Right Reserved, http://www.linrunsoft.com/
- * This source is subject to the LinrunSpace License. Please contact 上海林原信息科技有限公司 to get more information.
- * </copyright>
- */
+
 package com.hankcs.hanlp.seg;
 
 import com.hankcs.hanlp.HanLP;
@@ -33,11 +23,7 @@ import java.util.*;
 import static com.hankcs.hanlp.utility.Predefine.logger;
 
 /**
- * 分词器（分词服务）<br>
- * 是所有分词器的基类（Abstract）<br>
- * 分词器的分词方法是线程安全的，但配置方法则不保证
- *
- * @author hankcs
+是一个抽象类，所以分词器的父类
  */
 public abstract class Segment
 {
@@ -342,7 +328,8 @@ public abstract class Segment
      */
     protected void mergeNumberQuantifier(List<Vertex> termList, WordNet wordNetAll, Config config)
     {
-        if (termList.size() < 4) return;
+        if (termList.size() < 4) 
+        	return;
         StringBuilder sbQuantifier = new StringBuilder();
         ListIterator<Vertex> iterator = termList.listIterator();
         iterator.next();
@@ -350,8 +337,7 @@ public abstract class Segment
         while (iterator.hasNext())
         {
             Vertex pre = iterator.next();
-            if (pre.hasNature(Nature.m))
-            {
+            if (pre.hasNature(Nature.m)) {
                 sbQuantifier.append(pre.realWord);
                 Vertex cur = null;
                 while (iterator.hasNext() && (cur = iterator.next()).hasNature(Nature.m))

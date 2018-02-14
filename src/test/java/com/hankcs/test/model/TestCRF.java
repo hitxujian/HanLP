@@ -91,25 +91,28 @@ public class TestCRF extends TestCase
     }
 
     /**
-     * 现有的CRF效果不满意，重新制作一份以供训练
+     *BMES标注集
      *
      * @throws Exception
      */
-    public void testPrepareCRFTrainingCorpus() throws Exception
-    {
-        final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("e:\\2014.txt"), "UTF-8"));
-        CorpusLoader.walk("D:\\Doc\\语料库\\2014_hankcs", new CorpusLoader.Handler()
-                          {
+    public void testPrepareCRFTrainingCorpus(String inputDir,String outputFile) throws Exception{
+        final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"));
+        CorpusLoader.walk(inputDir, new CorpusLoader.Handler(){
                               @Override
                               public void handle(Document document)
-                              {
-                                  try
-                                  {
+                              {//document对象就是加载到内存的文档，对应某一个文本文件。
+                            	  //每个文件可以有多个句子；
+                            	  //每个句子可以是多个单词
+                                  try{
                                       List<List<Word>> sentenceList = document.getSimpleSentenceList();
-                                      if (sentenceList.size() == 0) return;
-                                      for (List<Word> sentence : sentenceList)
-                                      {
-                                          if (sentence.size() == 0) continue;
+                                      if (sentenceList.size() == 0) 
+                                    	  return;
+                                      long  cnt=0;
+                                      for (List<Word> sentence : sentenceList){
+                                    	  //遍历每个句子，句子每个元素是 单词+词性
+                                          if (sentence.size() == 0) 
+                                        	  continue;
+                                          System.out.println("当前处理的句子是"+(++cnt));
                                           for (IWord iWord : sentence)
                                           {
                                               String word = iWord.getValue();

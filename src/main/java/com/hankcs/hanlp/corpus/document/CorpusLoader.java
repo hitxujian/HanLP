@@ -28,13 +28,15 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  */
 public class CorpusLoader
 {
-    public static void walk(String folderPath, Handler handler)
-    {
+    public static void walk(String folderPath, Handler handler){
         long start = System.currentTimeMillis();
         List<File> fileList = FolderWalker.open(folderPath);
         int i = 0;
         for (File file : fileList)
         {
+        	String tempFileName=file.getName();
+        	if(!tempFileName.endsWith("txt"))
+        		continue;
             System.out.print(file);
             Document document = convert2Document(file);
             System.out.println(" " + ++i + " / " + fileList.size());
@@ -133,25 +135,16 @@ public class CorpusLoader
         return simpleList;
     }
 
-    public static Document convert2Document(File file)
-    {
-//        try
-//        {
+    //
+    public static Document convert2Document(File file) {
             Document document = Document.create(IOUtil.readTxt(file.getPath()));
-            if (document != null)
-            {
+            if (document != null){
                 return document;
             }
-            else
-            {
+            else{
                 throw new IllegalArgumentException(file.getPath() + "读取失败");
             }
-//        }
-//        catch (IOException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return null;
+
     }
 
     public static interface Handler

@@ -26,9 +26,11 @@ public class MathTools
      * 词典概率对数都是负数，取反就变正了，把这个正数叫做费用
      * 概率乘法越大变成 -log(p) 加法越小越好
      * 从一个词到另一个词的词的花费
-     *
+     * 这里的转移概率计算有点像    interpolation 平滑   
+     * hat(pn)=b*pn+(1-b)*hat(pn-1)
+     *p（from|to)
      * @param from 前面的词
-     * @param to   后面的词
+     * @param to   当前的词
      * @return 分数
      */
     public static double calculateWeight(Vertex from, Vertex to)
@@ -39,11 +41,19 @@ public class MathTools
             frequency = 1;  // 防止发生除零错误
         }
         int nTwoWordsFreq = CoreBiGramTableDictionary.getBiFrequency(from.wordID, to.wordID);
-       //原作者
+        
+        /**
+         * 基本公式就是   -log{a*P(Ci-1)+(1-a)P(Ci|Ci-1)}
+         * 可以看到是一种 中和的方法 就是不管ngram是不是0都会考虑n-1gram
+         * 但实际计算的时候是如下
+         weight = -Math.log(smooth* (1.0 + oneWordFreq)/ (Utility.MAX_FREQUENCE + 0.0)+ (1.0 - smooth)* ((1.0 - tinyDouble) * wordPairFreq/ (1.0 + oneWordFreq) + tinyDouble)); 
+        */
+       // double value = -Math.log(   dSmoothingPara * frequency / (MAX_FREQUENCY) + 
+       // 		                    (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp)
+       // 		                );
         double value = -Math.log(   dSmoothingPara * frequency / (MAX_FREQUENCY) + 
-        		                    (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp)
-        		                );
- 
+                (1 - dSmoothingPara) * ( nTwoWordsFreq / frequency)
+            );
 
         if (value < 0.0)
         {

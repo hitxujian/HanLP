@@ -57,9 +57,9 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
         {
             System.out.printf("粗分词网：\n%s\n", wordNetAll);
         }
-//        start = System.currentTimeMillis();
+
+        //-------这里得到了粗分结果
         List<Vertex> vertexList = viterbi(wordNetAll);
-//        System.out.println("最短路：" + (System.currentTimeMillis() - start));
 
         if (config.useCustomDictionary)
         {
@@ -75,6 +75,7 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
         }
 
         // 数字识别
+        //--------粗分结果以后可以做合并处理，这里具体合并过程可以参考  http://www.cnblogs.com/en-heng/p/6274881.html
         if (config.numberQuantifierRecognize)
         {
             mergeNumberQuantifier(vertexList, wordNetAll, config);

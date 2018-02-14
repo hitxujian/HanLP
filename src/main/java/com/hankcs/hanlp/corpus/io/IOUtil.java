@@ -89,11 +89,10 @@ public class IOUtil
      */
     public static String readTxt(String path)
     {
-        if (path == null) return null;
-        try
-        {
-            InputStream in = IOAdapter == null ? new FileInputStream(path) :
-                    IOAdapter.open(path);
+        if (path == null) 
+        	return null;
+        try{
+            InputStream in = IOAdapter == null ? new FileInputStream(path) :IOAdapter.open(path);
             byte[] fileContent = new byte[in.available()];
             readBytesFromOtherInputStream(in, fileContent);
             in.close();
