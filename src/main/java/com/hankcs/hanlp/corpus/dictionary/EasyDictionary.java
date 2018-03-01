@@ -22,12 +22,12 @@ import static com.hankcs.hanlp.HanLP.Config.IOAdapter;
 import static com.hankcs.hanlp.utility.Predefine.logger;
 
 /**
- * 一个通用的、满足特定格式的双数组词典
- *
- * @author hankcs
+这里是加载普通词典的过程，比如人名词典
+词典的格式每行
+一个单词+这个单词的多个标签（其中每个标签是标签+频次的一个pair）
+
  */
-public class EasyDictionary
-{
+public class EasyDictionary{
     DoubleArrayTrie<Attribute> trie = new DoubleArrayTrie<Attribute>();
 
     public static EasyDictionary create(String path)
@@ -45,8 +45,7 @@ public class EasyDictionary
         return null;
     }
 
-    private boolean load(String path)
-    {
+    private boolean load(String path){
         logger.info("通用词典开始加载:" + path);
         List<String> wordList = new ArrayList<String>();
         List<Attribute> attributeList = new ArrayList<Attribute>();
@@ -54,15 +53,15 @@ public class EasyDictionary
         try
         {
             br = new BufferedReader(new InputStreamReader(IOAdapter == null ? new FileInputStream(path) : IOAdapter.open(path), "UTF-8"));
-            String line;
+            String line;//丁建国 nr 2
             while ((line = br.readLine()) != null)
             {
                 String param[] = line.split(" ");
                 wordList.add(param[0]);
                 int natureCount = (param.length - 1) / 2;
                 Attribute attribute = new Attribute(natureCount);
-                for (int i = 0; i < natureCount; ++i)
-                {
+                for (int i = 0; i < natureCount; ++i){
+                	//这里是遍历给定单词的每个标签
                     attribute.nature[i] = Enum.valueOf(Nature.class, param[1 + 2 * i]);
                     attribute.frequency[i] = Integer.parseInt(param[2 + 2 * i]);
                     attribute.totalFrequency += attribute.frequency[i];
@@ -245,4 +244,14 @@ public class EasyDictionary
                     '}';
         }
     }
+    
+    
+    
+    
+    public static void main(String[] args) {
+		
+    	 EasyDictionary dictionary = EasyDictionary.create("D:\\data\\data\\dictionary\\custom\\人名词典.txt");
+    	 System.out.println( dictionary.trie.size() );
+	}
+    
 }

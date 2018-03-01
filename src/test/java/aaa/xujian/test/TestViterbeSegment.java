@@ -28,8 +28,10 @@ public class TestViterbeSegment
 //		List<Term> termList = segment.seg(text);
 //		System.out.println(termList);
     	//HanLP.segment()
-    	Segment segment=new ViterbiSegment().enableCustomDictionary(true).enablePlaceRecognize(false).enableOrganizationRecognize(false);
-		String  text="陶某、陶某某路经该处时";
+    	HanLP.Config.DEBUG=true;
+    	Segment segment=new ViterbiSegment().enableCustomDictionary(false).enableNameRecognize(true).enablePlaceRecognize(false).enableOrganizationRecognize(true);
+		String text="一双红色的耐克运动鞋。";
+    	//String  text="龚学平等领导";
 		//我/rr, 要/v, 听/v, 葫芦娃/nz, 的/ude1, 歌/n, 是/vshi, 葫芦娃/nz, 葫芦娃/nz, ，/w, 是/vshi, 赤裸/n, 化/v, 。/w]
 		List<Term> segTermList=segment.seg(text) ;
 		System.out.println(segTermList);

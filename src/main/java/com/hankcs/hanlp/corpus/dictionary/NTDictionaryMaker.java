@@ -259,6 +259,6 @@ public class NTDictionaryMaker extends CommonDictionaryMaker
     public boolean saveTxtTo(String path)
     {
         if (!super.saveTxtTo(path)) return false;
-        return tfDictionary.saveKeyTo(path + ".pattern.txt");
+        return tfDictionary.saveKeyTo(path + ".2014_dictionary");
     }
 }

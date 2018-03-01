@@ -20,7 +20,7 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  */
 public abstract class CommonDictionaryMaker implements ISaveAble
 {
-    static boolean verbose = false;
+    public  static boolean verbose = false;
     /**
      * 语料库中的单词
      */
@@ -38,7 +38,10 @@ public abstract class CommonDictionaryMaker implements ISaveAble
     {
         nGramDictionaryMaker = new NGramDictionaryMaker();
         dictionaryMaker = new DictionaryMaker();
-        this.dictionary = dictionary;
+       
+        
+         this.dictionary = dictionary;
+        
     }
 
     @Override

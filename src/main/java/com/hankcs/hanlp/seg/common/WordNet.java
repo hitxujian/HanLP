@@ -26,7 +26,11 @@ import java.util.ListIterator;
 import static com.hankcs.hanlp.utility.Predefine.logger;
 
 /**
-代表了一个词图，走到当前位置，然后当前位置 所有的可能的词串成一串 ，组成一个list
+代表了一个词图
+词图由节点+边组成
+只需要记住相邻的节点就好了
+两个关键构造函数
+
 
 0始##始
 1他
@@ -73,8 +77,7 @@ public class WordNet
      *
      * @param sentence 句子
      */
-    public WordNet(String sentence)
-    {
+    public WordNet(String sentence){
         this(sentence.toCharArray());
     }
 
@@ -158,8 +161,7 @@ public class WordNet
      */
     public void insert(int line, Vertex vertex, WordNet wordNetAll)
     {
-        for (Vertex oldVertex : vertexes[line])
-        {
+        for (Vertex oldVertex : vertexes[line]){
             // 保证唯一性
             if (oldVertex.realWord.length() == vertex.realWord.length()) return;
         }

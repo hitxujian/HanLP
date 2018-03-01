@@ -30,8 +30,7 @@ import java.util.Set;
  */
 public class TestNTRecognition extends TestCase
 {
-    public void testSeg() throws Exception
-    {
+    public void testSeg() throws Exception{
         HanLP.Config.enableDebug();
         DijkstraSegment segment = new DijkstraSegment();
         segment.enableCustomDictionary(false);
@@ -40,8 +39,7 @@ public class TestNTRecognition extends TestCase
         System.out.println(segment.seg("东欧的球队"));
     }
 
-    public void testGeneratePatternJavaCode() throws Exception
-    {
+    public void testGeneratePatternJavaCode() throws Exception{
         CommonStringDictionary commonStringDictionary = new CommonStringDictionary();
         commonStringDictionary.load("data/dictionary/organization/nt.pattern.txt");
         StringBuilder sb = new StringBuilder();
@@ -56,8 +54,7 @@ public class TestNTRecognition extends TestCase
         IOUtil.saveTxt("data/dictionary/organization/code.txt", sb.toString());
     }
 
-    public void testRemoveP() throws Exception
-    {
+    public void testRemoveP() throws Exception{
         DictionaryMaker maker = DictionaryMaker.load(HanLP.Config.OrganizationDictionaryPath);
         for (Map.Entry<String, Item> entry : maker.entrySet())
         {
@@ -73,4 +70,18 @@ public class TestNTRecognition extends TestCase
         }
         maker.saveTxtTo(HanLP.Config.OrganizationDictionaryPath);
     }
+    
+    
+    
+    
+    public static void main(String[] args) {
+    	TestNTRecognition test=new TestNTRecognition();
+    	
+    	try {
+			test.testGeneratePatternJavaCode();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

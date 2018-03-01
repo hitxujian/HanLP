@@ -1,19 +1,8 @@
-/*
- * <summary></summary>
- * <author>He Han</author>
- * <email>hankcs.cn@gmail.com</email>
- * <create-date>2014/9/9 14:32</create-date>
- *
- * <copyright file="NR.java" company="上海林原信息科技有限公司">
- * Copyright (c) 2003-2014, 上海林原信息科技有限公司. All Right Reserved, http://www.linrunsoft.com/
- * This source is subject to the LinrunSpace License. Please contact 上海林原信息科技有限公司 to get more information.
- * </copyright>
- */
+
 package com.hankcs.hanlp.corpus.tag;
 
 /**
- * 人名标签
- * @author hankcs
+hanlp用到的人名各种标签，具体细分了比如  KB  上文，姓，名字等等
  */
 public enum NR
 {
@@ -88,7 +77,7 @@ public enum NR
     Z,
 
     /**
-     * 	Po	以上之外其他的角色
+     * 	Po	以上之外其他的角色，啥也不是
      */
     A,
 

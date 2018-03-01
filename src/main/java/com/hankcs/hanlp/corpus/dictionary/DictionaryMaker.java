@@ -31,8 +31,7 @@ public class DictionaryMaker implements ISaveAble
 {
     BinTrie<Item> trie;
 
-    public DictionaryMaker()
-    {
+    public DictionaryMaker(){
         trie = new BinTrie<Item>();
     }
 
@@ -294,7 +293,8 @@ public class DictionaryMaker implements ISaveAble
     @Override
     public boolean saveTxtTo(String path)
     {
-        if (trie.size() == 0) return true;  // 如果没有词条，那也算成功了
+        if (trie.size() == 0) 
+        	return true;  // 如果没有词条，那也算成功了
         try
         {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(IOUtil.newOutputStream(path), "UTF-8"));

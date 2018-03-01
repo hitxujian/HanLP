@@ -32,21 +32,27 @@ public class CorpusLoader
         long start = System.currentTimeMillis();
         List<File> fileList = FolderWalker.open(folderPath);
         int i = 0;
-        for (File file : fileList)
-        {
+        for (File file : fileList){
         	String tempFileName=file.getName();
         	if(!tempFileName.endsWith("txt"))
         		continue;
             System.out.print(file);
             Document document = convert2Document(file);
             System.out.println(" " + ++i + " / " + fileList.size());
-            handler.handle(document);
+//            if(i>=10000){
+//            	break;
+//            }
+            try{
+                handler.handle(document);
+            }catch(NullPointerException e){
+            	System.out.println("空指针");
+            	handler.handle(document);
+            }
         }
         System.out.printf("花费时间%d ms\n", System.currentTimeMillis() - start);
     }
 
-    public static void walk(String folderPath, HandlerThread[] threadArray)
-    {
+    public static void walk(String folderPath, HandlerThread[] threadArray){
         long start = System.currentTimeMillis();
         List<File> fileList = FolderWalker.open(folderPath);
         for (int i = 0; i < threadArray.length - 1; ++i)
@@ -70,8 +76,7 @@ public class CorpusLoader
         System.out.printf("花费时间%d ms\n", System.currentTimeMillis() - start);
     }
 
-    public static List<Document> convert2DocumentList(String folderPath)
-    {
+    public static List<Document> convert2DocumentList(String folderPath){
         long start = System.currentTimeMillis();
         List<File> fileList = FolderWalker.open(folderPath);
         List<Document> documentList = new LinkedList<Document>();

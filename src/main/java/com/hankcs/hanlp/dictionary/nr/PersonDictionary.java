@@ -29,12 +29,10 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
 import static com.hankcs.hanlp.dictionary.nr.NRConstant.*;
 
 /**
- * 人名识别用的词典，实际上是对两个词典的包装
- *
- * @author hankcs
+多模式匹配问题参考
+http://www.hankcs.com/program/algorithm/aho-corasick-double-array-trie.html
  */
-public class PersonDictionary
-{
+public class PersonDictionary{
     /**
      * 人名词典
      */
@@ -46,56 +44,60 @@ public class PersonDictionary
     /**
      * AC算法用到的Trie树
      */
-    public static AhoCorasickDoubleArrayTrie<NRPattern> trie;
+    public static AhoCorasickDoubleArrayTrie<NRPattern> trie;//就是一些规则，定义哪几个tag在一起时一个人名
 
     public static final CoreDictionary.Attribute ATTRIBUTE = new CoreDictionary.Attribute(Nature.nr, 100);
 
-    static
-    {
+    static{
         long start = System.currentTimeMillis();
         dictionary = new NRDictionary();
-        if (!dictionary.load(HanLP.Config.PersonDictionaryPath))
-        {
+        if (!dictionary.load(HanLP.Config.PersonDictionaryPath)){
             throw new IllegalArgumentException("人名词典加载失败：" + HanLP.Config.PersonDictionaryPath);
         }
         transformMatrixDictionary = new TransformMatrixDictionary<NR>(NR.class);
         transformMatrixDictionary.load(HanLP.Config.PersonDictionaryTrPath);
+        
+        //构建 规则的过程
         trie = new AhoCorasickDoubleArrayTrie<NRPattern>();
         TreeMap<String, NRPattern> map = new TreeMap<String, NRPattern>();
-        for (NRPattern pattern : NRPattern.values())
-        {
+        for (NRPattern pattern : NRPattern.values()){
             map.put(pattern.toString(), pattern);
         }
         trie.build(map);
+        
         logger.info(HanLP.Config.PersonDictionaryPath + "加载成功，耗时" + (System.currentTimeMillis() - start) + "ms");
     }
 
     /**
-     * 模式匹配
+     * 模式匹配,主要就是// 拆分UV
      *
      * @param nrList         确定的标注序列
      * @param vertexList     原始的未加角色标注的序列
      * @param wordNetOptimum 待优化的图
      * @param wordNetAll     全词图
      */
-    public static void parsePattern(List<NR> nrList, List<Vertex> vertexList, final WordNet wordNetOptimum, final WordNet wordNetAll)
-    {
-        // 拆分UV
+    public static void parsePattern(List<NR> nrList, List<Vertex> vertexList, final WordNet wordNetOptimum, final WordNet wordNetAll){
+        
         ListIterator<Vertex> listIterator = vertexList.listIterator();
-        StringBuilder sbPattern = new StringBuilder(nrList.size());
+        
         NR preNR = NR.A;
         boolean backUp = false;
         int index = 0;
-        for (NR nr : nrList)
-        {
+        
+        
+        
+        
+        StringBuilder sbPattern = new StringBuilder(nrList.size());
+        //// 拆分UV
+        //[K, B, C, V, K, K]
+        //[ /K ,龚/B ,学/C ,平等/V ,领导/K , /K] 
+        for (NR nr : nrList){//这里其实是遍历每个标注后的token
             ++index;
             Vertex current = listIterator.next();
-//            logger.trace("{}/{}", current.realWord, nr);
-            switch (nr)
-            {
+            switch (nr){
+            //这里重点是U和V  双字人名的末字和下文成词；   姓氏和上文成词
                 case U:
-                    if (!backUp)
-                    {
+                    if (!backUp){
                         vertexList = new ArrayList<Vertex>(vertexList);
                         listIterator = vertexList.listIterator(index);
                         backUp = true;
@@ -111,8 +113,7 @@ public class PersonDictionary
                     listIterator.add(new Vertex(nowB));
                     continue;
                 case V:
-                    if (!backUp)
-                    {
+                    if (!backUp){
                         vertexList = new ArrayList<Vertex>(vertexList);
                         listIterator = vertexList.listIterator(index);
                         backUp = true;
@@ -135,63 +136,65 @@ public class PersonDictionary
                     listIterator.next();
                     continue;
                 default:
-                    sbPattern.append(nr.toString());
+                    sbPattern.append(nr.toString());//非UV直接添加进去就好了
                     break;
             }
             preNR = nr;
-        }
+        }//end for
+     
+        
+        
+        
+        
+        
         String pattern = sbPattern.toString();
-//        logger.trace("模式串：{}", pattern);
-//        logger.trace("对应串：{}", vertexList);
-//        if (pattern.length() != vertexList.size())
-//        {
-//            logger.warn("人名识别模式串有bug", pattern, vertexList);
-//            return;
-//        }
+       // System.out.println("模式串：{}"+pattern);
+        //System.out.println("对应串：{}"+vertexList);
+       
         final Vertex[] wordArray = vertexList.toArray(new Vertex[0]);
         final int[] offsetArray = new int[wordArray.length];
         offsetArray[0] = 0;
-        for (int i = 1; i < wordArray.length; ++i)
-        {
+        for (int i = 1; i < wordArray.length; ++i){
             offsetArray[i] = offsetArray[i - 1] + wordArray[i - 1].realWord.length();
         }
-        trie.parseText(pattern, new AhoCorasickDoubleArrayTrie.IHit<NRPattern>()
-        {
+        
+        
+        
+        
+        
+        
+        //比如针对  龚/学/平/等/领导    抽取出的pattern是    [ BCDLK]
+        //注意这里的 pattern就是需要进行多模式匹配的文本
+        trie.parseText(pattern, new AhoCorasickDoubleArrayTrie.IHit<NRPattern>(){
             @Override
-            public void hit(int begin, int end, NRPattern value)
-            {
-//            logger.trace("匹配到：{}", keyword);
+            public void hit(int begin, int end, NRPattern value){
                 StringBuilder sbName = new StringBuilder();
-                for (int i = begin; i < end; ++i)
-                {
+                for (int i = begin; i < end; ++i){
                     sbName.append(wordArray[i].realWord);
                 }
                 String name = sbName.toString();
-//            logger.trace("识别出：{}", name);
                 // 对一些bad case做出调整
-                switch (value)
-                {
-                    case BCD:
-                        if (name.charAt(0) == name.charAt(2)) return; // 姓和最后一个名不可能相等的
-//                        String cd = name.substring(1);
-//                        if (CoreDictionary.contains(cd))
-//                        {
-//                            EnumItem<NR> item = PersonDictionary.dictionary.get(cd);
-//                            if (item == null || !item.containsLabel(Z)) return; // 三字名字但是后两个字不在词典中，有很大可能性是误命中
-//                        }
-                        break;
+                switch (value){
+                    case BCD://  这里考虑双字的名字，C作为双字名字的第一个字；D作为双字名字的第二个字；B是姓，如果出现了这种模式的话
+                        if (name.charAt(0) == name.charAt(2)) 
+                        	return; // 姓和最后一个名不可能相等的
+                        	break;
                 }
-                if (isBadCase(name)) return;
+                if (isBadCase(name)) 
+                	return;
 
                 // 正式算它是一个名字
-                if (HanLP.Config.DEBUG)
-                {
+                if (HanLP.Config.DEBUG){
                     System.out.printf("识别出人名：%s %s\n", name, value);
                 }
                 int offset = offsetArray[begin];
                 wordNetOptimum.insert(offset, new Vertex(Predefine.TAG_PEOPLE, name, ATTRIBUTE, WORD_ID), wordNetAll);
             }
         });
+        
+        
+        
+        
     }
 
     /**
@@ -201,10 +204,11 @@ public class PersonDictionary
      * @param name
      * @return
      */
-    static boolean isBadCase(String name)
-    {
+    static boolean isBadCase(String name){
+    	//
         EnumItem<NR> nrEnumItem = dictionary.get(name);
-        if (nrEnumItem == null) return false;
+        if (nrEnumItem == null) 
+        	return false;
         return nrEnumItem.containsLabel(NR.A);
     }
 }

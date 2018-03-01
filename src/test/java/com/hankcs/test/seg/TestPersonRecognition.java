@@ -71,7 +71,17 @@ public class TestPersonRecognition extends TestCase
     {
         HanLP.Config.enableDebug();
         Segment segment = new DijkstraSegment();
-        System.out.println(segment.seg("编剧邵钧林和稽道青说"));
+        System.out.println(segment.seg("王总和李秘书不同意这种做法的。"));
 
     }
+    
+    public static void main(String[] args) {
+    	TestPersonRecognition test=new TestPersonRecognition();
+    	try {
+			test.testChineseNameRecognition();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

@@ -29,15 +29,16 @@ import java.util.List;
  */
 public class PersonRecognition
 {
-    public static boolean Recognition(List<Vertex> pWordSegResult, WordNet wordNetOptimum, WordNet wordNetAll)
-    {
+	// pWordSegResult 就是词图的一条路径，这个路径淡然包含了节点+路径  
+		//wordNetOptimum  就是优化后的词图了
+    public static boolean Recognition(List<Vertex> pWordSegResult, WordNet wordNetOptimum, WordNet wordNetAll){
+    	//1、这里是形成人名标注的过程
+    	//注意这个函数的返回是一个roleTagList，list的每个元素是一个enumitem代表了每个单词的  标签+频次
         List<EnumItem<NR>> roleTagList = roleObserve(pWordSegResult);
-        if (HanLP.Config.DEBUG)
-        {
+        if (HanLP.Config.DEBUG){
             StringBuilder sbLog = new StringBuilder();
             Iterator<Vertex> iterator = pWordSegResult.iterator();
-            for (EnumItem<NR> nrEnumItem : roleTagList)
-            {
+            for (EnumItem<NR> nrEnumItem : roleTagList){
                 sbLog.append('[');
                 sbLog.append(iterator.next().realWord);
                 sbLog.append(' ');
@@ -47,13 +48,11 @@ public class PersonRecognition
             System.out.printf("人名角色观察：%s\n", sbLog.toString());
         }
         List<NR> nrList = viterbiComputeSimply(roleTagList);
-        if (HanLP.Config.DEBUG)
-        {
+        if (HanLP.Config.DEBUG){
             StringBuilder sbLog = new StringBuilder();
             Iterator<Vertex> iterator = pWordSegResult.iterator();
             sbLog.append('[');
-            for (NR nr : nrList)
-            {
+            for (NR nr : nrList){
                 sbLog.append(iterator.next().realWord);
                 sbLog.append('/');
                 sbLog.append(nr);
@@ -64,17 +63,17 @@ public class PersonRecognition
             System.out.printf("人名角色标注：%s\n", sbLog.toString());
         }
 
+        
+        //2、这里是真正识别人名的过程，上边只是形成人名标注而已
         PersonDictionary.parsePattern(nrList, pWordSegResult, wordNetOptimum, wordNetAll);
         return true;
     }
 
     /**
      * 角色观察(从模型中加载所有词语对应的所有角色,允许进行一些规则补充)
-     * @param wordSegResult 粗分结果
-     * @return
+     //注意这个函数的返回是一个list，list的每个元素是一个enumitem代表了每个单词的  标签+频次
      */
-    public static List<EnumItem<NR>> roleObserve(List<Vertex> wordSegResult)
-    {
+    public static List<EnumItem<NR>> roleObserve(List<Vertex> wordSegResult){
         List<EnumItem<NR>> tagList = new LinkedList<EnumItem<NR>>();
         Iterator<Vertex> iterator = wordSegResult.iterator();
         iterator.next();
@@ -117,8 +116,7 @@ public class PersonRecognition
      * @param roleTagList
      * @return
      */
-    public static List<NR> viterbiCompute(List<EnumItem<NR>> roleTagList)
-    {
+    public static List<NR> viterbiCompute(List<EnumItem<NR>> roleTagList){
         return Viterbi.computeEnum(roleTagList, PersonDictionary.transformMatrixDictionary);
     }
 

@@ -1,27 +1,16 @@
-/*
- * <summary></summary>
- * <author>He Han</author>
- * <email>hankcs.cn@gmail.com</email>
- * <create-date>2014/12/31 11:58</create-date>
- *
- * <copyright file="NRPattern.java" company="上海林原信息科技有限公司">
- * Copyright (c) 2003-2014, 上海林原信息科技有限公司. All Right Reserved, http://www.linrunsoft.com/
- * This source is subject to the LinrunSpace License. Please contact 上海林原信息科技有限公司 to get more information.
- * </copyright>
- */
+
 package com.hankcs.hanlp.dictionary.nr;
 
 /**
  * 人名识别模式串
- *
- * @author hankcs
+http://www.hankcs.com/nlp/segment/ictclas-the-hmm-name-recognition.html
  */
 public enum NRPattern
 {
-    BBCD,
-    BBE,
+    BBCD,  //姓+姓+名1+名2;
+    BBE,	//姓+姓+单名;
     BBZ,
-    BCD,
+    BCD,	//姓+名1+名2
     BEE,
     BE,
     BC,
@@ -31,7 +20,6 @@ public enum NRPattern
     EG,
     BXD,
     BZ,
-//    CD,
     EE,
     FE,
     FC,
@@ -39,5 +27,4 @@ public enum NRPattern
     FG,
     Y,
     XD,
-//    GD,
 }

@@ -35,7 +35,8 @@ public class CommonStringDictionary
     public boolean load(String path)
     {
         trie = new BinTrie<Byte>();
-        if (loadDat(path + Predefine.TRIE_EXT)) return true;
+        if (loadDat(path + Predefine.TRIE_EXT)) 
+        	return true;
         String line = null;
         try
         {

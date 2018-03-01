@@ -29,10 +29,10 @@ import java.util.List;
  *
  * @author hankcs
  */
-public class OrganizationRecognition
-{
-    public static boolean Recognition(List<Vertex> pWordSegResult, WordNet wordNetOptimum, WordNet wordNetAll)
-    {
+public class OrganizationRecognition{
+	// pWordSegResult 就是词图的一条路径，这个路径淡然包含了节点+路径  
+	//wordNetOptimum  就是优化后的词图了
+    public static boolean Recognition(List<Vertex> pWordSegResult, WordNet wordNetOptimum, WordNet wordNetAll){
         List<EnumItem<NT>> roleTagList = roleTag(pWordSegResult, wordNetAll);
         if (HanLP.Config.DEBUG)
         {
@@ -49,8 +49,7 @@ public class OrganizationRecognition
             System.out.printf("机构名角色观察：%s\n", sbLog.toString());
         }
         List<NT> NTList = viterbiExCompute(roleTagList);
-        if (HanLP.Config.DEBUG)
-        {
+        if (HanLP.Config.DEBUG){
             StringBuilder sbLog = new StringBuilder();
             Iterator<Vertex> iterator = pWordSegResult.iterator();
             sbLog.append('[');
@@ -70,18 +69,17 @@ public class OrganizationRecognition
         return true;
     }
 
-    public static List<EnumItem<NT>> roleTag(List<Vertex> vertexList, WordNet wordNetAll)
-    {
+    
+    
+    //注意这个函数的返回是一个list，list的每个元素是一个enumitem代表了每个单词的  标签+频次
+    public static List<EnumItem<NT>> roleTag(List<Vertex> vertexList, WordNet wordNetAll){
         List<EnumItem<NT>> tagList = new LinkedList<EnumItem<NT>>();
         //        int line = 0;
-        for (Vertex vertex : vertexList)
-        {
+        for (Vertex vertex : vertexList){
             // 构成更长的
             Nature nature = vertex.guessNature();
-            switch (nature)
-            {
-                case nrf:
-                {
+            switch (nature){
+                case nrf:{
                     if (vertex.getAttribute().totalFrequency <= 1000)
                     {
                         tagList.add(new EnumItem<NT>(NT.F, 1000));
@@ -108,8 +106,7 @@ public class OrganizationRecognition
             }
 
             EnumItem<NT> NTEnumItem = OrganizationDictionary.dictionary.get(vertex.word);  // 此处用等效词，更加精准
-            if (NTEnumItem == null)
-            {
+            if (NTEnumItem == null){
                 NTEnumItem = new EnumItem<NT>(NT.Z, OrganizationDictionary.transformMatrixDictionary.getTotalFrequency(NT.Z));
             }
             tagList.add(NTEnumItem);

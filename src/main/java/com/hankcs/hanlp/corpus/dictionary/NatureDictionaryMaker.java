@@ -31,8 +31,7 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  */
 public class NatureDictionaryMaker extends CommonDictionaryMaker
 {
-    public NatureDictionaryMaker()
-    {
+    public NatureDictionaryMaker(){
         super(null);
     }
 

@@ -11,8 +11,7 @@ public class TestNSDictionaryMaker {
     {
         EasyDictionary dictionary = EasyDictionary.create("data/dictionary/2014_dictionary.txt");
         final NSDictionaryMaker nsDictionaryMaker = new NSDictionaryMaker(dictionary);
-        CorpusLoader.walk("D:\\JavaProjects\\CorpusToolBox\\data\\2014\\", new CorpusLoader.Handler()
-        {
+        CorpusLoader.walk("D:\\JavaProjects\\CorpusToolBox\\data\\2014\\", new CorpusLoader.Handler(){
             @Override
             public void handle(Document document)
             {

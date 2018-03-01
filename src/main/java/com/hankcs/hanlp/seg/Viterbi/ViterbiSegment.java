@@ -82,12 +82,10 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
         }
 
         // 实体命名识别
-        if (config.ner)
-        {
+        if (config.ner){
             WordNet wordNetOptimum = new WordNet(sentence, vertexList);
             int preSize = wordNetOptimum.size();
-            if (config.nameRecognize)
-            {
+            if (config.nameRecognize){
                 PersonRecognition.Recognition(vertexList, wordNetOptimum, wordNetAll);
             }
             if (config.translatedNameRecognize)
@@ -136,8 +134,7 @@ public class ViterbiSegment extends WordBasedGenerativeModelSegment
         return convert(vertexList, config.offset);
     }
 
-    private static List<Vertex> viterbi(WordNet wordNet)
-    {
+    private static List<Vertex> viterbi(WordNet wordNet){
         // 避免生成对象，优化速度
         LinkedList<Vertex> nodes[] = wordNet.getVertexes();
         //这里的nodes是是一个数组，数组每个元素类型是   LinkedList<Vertex>,也就是说数组每个元素是一个List

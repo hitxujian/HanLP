@@ -31,8 +31,7 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  *
  * @author hankcs
  */
-public class OrganizationDictionary
-{
+public class OrganizationDictionary{
     /**
      * 机构名词典
      */
@@ -62,6 +61,11 @@ public class OrganizationDictionary
     {
         long start = System.currentTimeMillis();
         dictionary = new NTDictionary();
+        //nt.txt 就是
+        //nt.txt:
+        //词语标注统计词典，比如里面有一行是这样的：
+        //会议 B 163 C 107 A 10
+        //意思是，会议这个词作为B标签出现了163次，作为C标签出现了107次，作为A标签出现了10次.
         dictionary.load(HanLP.Config.OrganizationDictionaryPath);
         logger.info(HanLP.Config.OrganizationDictionaryPath + "加载成功，耗时" + (System.currentTimeMillis() - start) + "ms");
         transformMatrixDictionary = new TransformMatrixDictionary<NT>(NT.class);
@@ -3762,7 +3766,8 @@ public class OrganizationDictionary
                 }
                 String name = sbName.toString();
                 // 对一些bad case做出调整
-                if (isBadCase(name)) return;
+                if (isBadCase(name)) 
+                	return;
 
                 // 正式算它是一个名字
                 if (HanLP.Config.DEBUG)
