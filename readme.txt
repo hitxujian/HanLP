@@ -1,3 +1,38 @@
+》》》对于词性标注，看到了代码
+  /**
+     * 猜测最可能的词性，也就是这个节点的词性中出现频率最大的那一个词性
+     *
+     * @return
+     */
+    public Nature guessNature()
+    {
+        return attribute.nature[0];
+    }
+这个nature其实也就是简简单单加载   CoreDictionary.load() 过程
+
+HanLP中使用了一阶隐马模型，在这个隐马尔可夫模型中，隐状态是词性，显状态是单词。
+》》》》如果想测试词性标注可以，就是利用函数 convert(vertextList) 就完了，在ViterbiSegment.java
+ //-------这里得到了粗分结果
+List<Vertex> vertexList = viterbi(wordNetAll);
+
+if (config.useCustomDictionary)
+{
+            if (config.indexMode > 0)
+                combineByCustomDictionary(vertexList, wordNetAll);
+            //2、最后结果根据自定义词典合并
+            else combineByCustomDictionary(vertexList);
+}
+
+if (HanLP.Config.DEBUG)
+{
+      System.out.println("粗分结果" + convert(vertexList, false));
+》》
+个人怀疑他的此行标注非常扯淡就是分词后取出每个词的可能词性，取那个最大的，
+
+
+
+
+
 》》》兼容人名日报标签（比如人名）的定义文件在
 Nature.java---是个词性定义，比如形容词，人名等等 是个广义定义
 hanlp针对人名识别的语料是在 NR.java 中
